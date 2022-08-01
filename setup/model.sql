@@ -8,7 +8,7 @@ create extension pgcrypto;
 -- admins
 drop table if exists admins;
 create table admins(
-  admin_id serial primary key,
+  admin_id serial unique primary key,
   admin_name varchar(64) unique not null,
   admin_avatar varchar(128),
   password varchar(64) not null,
