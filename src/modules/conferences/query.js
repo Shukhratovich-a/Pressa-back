@@ -19,7 +19,7 @@ const GET = `
         inner join (
           select
             p.*,
-            json_agg(i.post_image_link) as post_images,
+            json_agg(DISTINCT i.post_image_link) as post_images,
             json_agg(b.post_body_text) as post_bodys
           from
             posts p
