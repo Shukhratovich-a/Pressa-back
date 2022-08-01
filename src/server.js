@@ -42,4 +42,4 @@ const server = http.createServer(app);
 
 socket(server);
 
-server.listen(5000 || process.env.PORT, () => console.log(process.env.PORT || 5000));
+server.listen(process.env.PORT || 5000, () => console.log(process.env.PORT || 5000));
