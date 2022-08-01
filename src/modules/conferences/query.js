@@ -4,26 +4,21 @@ const GET = `
   from
     (
       select
-        c.conference_id,
-        c.conference_date,
-        c.conference_type,
+        c.*,
         to_json(o) "organizer",
         to_json(p) "post"
       from
         conferences c
         inner join (
           select
-            o.organizer_id,
-            o.organizer_name,
+            o.*,
             o.organizer_profession
           from
             organizers o
         ) as o on c.organizer_id = o.organizer_id
         inner join (
           select
-            p.post_id,
-            p.post_title,
-            p.conference_id,
+            p.*,
             json_agg(i.post_image_link) as post_images
           from
             posts p
@@ -32,30 +27,19 @@ const GET = `
             p.post_id
         ) as p on p.conference_id = c.conference_id
       where
-        c.status = 'active'
-      order by c.create_at desc
-      offset $1 limit $2
+        case
+          when $4 > 0 then c.conference_id = $4
+          when $4 = 0 then c.status = $3
+          else true
+        end
+      order by 
+        c.create_at desc
+      offset 
+        $1
+      limit
+        $2
     ) res;
 `;
-
-// select
-//     c.category_id,
-//     c.category_name,
-//     json_agg(s.*) as sub_categories
-//   from
-//     categories as c
-//     left join (
-//       select
-//         s.sub_category_id,
-//         s.sub_category_name,
-//         s.category_id
-//       from
-//         sub_categories as s
-//     ) as s on s.category_id = c.category_id
-//   where
-//     c.status = 'active'
-//   group by
-//     c.category_id;
 
 const POSTORGANIZER = `
   insert into
@@ -157,6 +141,15 @@ const POSTCONFERENCEPOSTBODY = `
   returning *; 
 `;
 
+const PUTSTATUS = `
+  update conferences set
+    status = $2
+  where
+    conference_id = $1 and
+    status = 'waiting'
+  returning *;
+`;
+
 export default {
   GET,
   POSTORGANIZER,
@@ -165,4 +158,5 @@ export default {
   POSTCONFERENCELINK,
   POSTCONFERENCEPOST,
   POSTCONFERENCEPOSTBODY,
+  PUTSTATUS,
 };

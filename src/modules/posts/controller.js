@@ -7,6 +7,21 @@ const imagesUpload = upload.fields([
   { name: "image", maxCount: 1 },
 ]);
 
+const GET = async (req, res, next) => {
+  try {
+    const posts = await model.GET(req.params, req.query);
+    if (posts.length == 0) return next(new NotFoundError(404, "client error"));
+
+    res.status(200).json({
+      status: 200,
+      message: "ok",
+      data: posts,
+    });
+  } catch (error) {
+    return next(new InternalServerError(500, error.message));
+  }
+};
+
 const POSTIMAGE = async (req, res, next) => {
   try {
     const images = await model.POSTIMAGE(req.params, req.files);
@@ -22,4 +37,4 @@ const POSTIMAGE = async (req, res, next) => {
   }
 };
 
-export default { POSTIMAGE, imagesUpload };
+export default { GET, POSTIMAGE, imagesUpload };

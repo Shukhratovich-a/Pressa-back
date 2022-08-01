@@ -2,9 +2,9 @@ import { HOST } from "../../config.js";
 import { fetch, fetchAll } from "../../lib/postgres.js";
 import query from "./query.js";
 
-const GET = async ({ page = 1, limit = 9 }) => {
+const GET = async ({ page = 1, limit = 9, status = "active" }, { conferenceId = 0 }) => {
   try {
-    let conferences = await fetchAll(query.GET, page - 1, limit);
+    let conferences = await fetchAll(query.GET, page - 1, limit, status, conferenceId);
 
     conferences = conferences.map((conference) => {
       delete conference.to_json.post.conference_id;
@@ -111,4 +111,14 @@ const POST = async (
   }
 };
 
-export default { GET, POST };
+const PUTSTATUS = async ({ conferenceId }, { status }) => {
+  try {
+    let conference = await fetch(query.PUTSTATUS, conferenceId, status);
+
+    return conference;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export default { GET, POST, PUTSTATUS };

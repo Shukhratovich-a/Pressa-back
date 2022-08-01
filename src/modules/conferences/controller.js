@@ -3,7 +3,7 @@ import { InternalServerError, NotFoundError } from "../../lib/error.js";
 
 const GET = async (req, res, next) => {
   try {
-    const conferences = await model.GET(req.query);
+    const conferences = await model.GET(req.query,req.params);
 
     if (conferences.length == 0) return next(new NotFoundError(404, "client error"));
 
@@ -32,4 +32,19 @@ const POST = async (req, res, next) => {
   }
 };
 
-export default { GET, POST };
+const PUTSTATUS = async (req, res, next) => {
+  try {
+    const conference = await model.PUTSTATUS(req.params, req.body);
+    if (!conference) return next(new NotFoundError(404, "client error"));
+
+    res.status(202).json({
+      status: 202,
+      message: "status edited",
+      data: conference,
+    });
+  } catch (error) {
+    return next(new InternalServerError(500, error.message));
+  }
+};
+
+export default { GET, POST, PUTSTATUS };

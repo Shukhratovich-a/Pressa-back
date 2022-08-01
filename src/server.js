@@ -2,17 +2,16 @@ import fs from "fs";
 import path from "path";
 import http from "http";
 
-import { Server } from "socket.io";
 import express from "express";
 import cors from "cors";
 
-import jwt from "./lib/jwt.js";
+import socket from "./socket/index.js";
 
 import modules from "./modules/modules.js";
 
 const app = express();
 app.use(express.json());
-app.use(express.static(path.join(process.cwd(),'src','uploads')))
+app.use(express.static(path.join(process.cwd(), "src", "uploads")));
 
 app.use(cors());
 
@@ -40,13 +39,7 @@ app.use((error, req, res, next) => {
 });
 
 const server = http.createServer(app);
-const io = new Server(server);
 
-io.on("connection", (client) => {
-  client.on("new message", ({ token, message }) => {
-    let { userId } = jwt.verify(token);
-    client.broadcast.emit("send message", { data: message });
-  });
-});
+socket(server);
 
 server.listen(5000 || process.env.PORT, () => console.log(process.env.PORT || 5000));

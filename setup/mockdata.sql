@@ -1,3 +1,12 @@
+-- admins
+insert into
+  admins(admin_name, password)
+values
+  (
+    'Jack',
+    crypt('12345678', gen_salt('bf'))
+  );
+  
 -- users
 insert into
   users(username, password)
@@ -182,6 +191,6 @@ values
 insert into
   post_images(post_image_link, post_id)
 values
-  ('https://picsum.photos/1080/1080', 1),
-  ('https://picsum.photos/1080/1080', 2),
-  ('https://picsum.photos/1080/1080', 3);
+  ('Rectangle1.jpg', 1),
+  ('Rectangle2.jpg', 2),
+  ('Rectangle3.jpg', 3);

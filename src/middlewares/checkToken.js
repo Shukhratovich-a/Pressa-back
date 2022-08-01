@@ -11,7 +11,13 @@ export default (req, res, next) => {
       return next(new ForbiddenError(403, "token required"));
     }
 
-    let { userId } = jwt.verify(token);
+    let { userId, adminId } = jwt.verify(token);
+
+    if (req.url == "/conferences/status/:conferenceId" || req.url.includes("admins")) {
+      if (!adminId) return next(new ForbiddenError(403, "only admin can do this"));
+
+      req.adminId = adminId;
+    }
 
     req.userId = userId;
 

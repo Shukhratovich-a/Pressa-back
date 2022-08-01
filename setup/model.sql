@@ -10,6 +10,7 @@ drop table if exists admins;
 create table admins(
   admin_id serial primary key,
   admin_name varchar(64) unique not null,
+  admin_avatar varchar(128),
   password varchar(64) not null,
   create_at timestamp default current_timestamp
 );
@@ -73,7 +74,7 @@ create table conferences(
   organizer_id int references organizers(organizer_id),
   category_id int references categories(category_id),
   sub_category_id int references sub_categories(sub_category_id),
-  status varchar(16) default 'active',
+  status varchar(16) default 'waiting',
   create_at timestamp default current_timestamp
 );
 
