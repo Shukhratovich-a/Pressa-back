@@ -19,10 +19,12 @@ const GET = `
         inner join (
           select
             p.*,
-            json_agg(i.post_image_link) as post_images
+            json_agg(i.post_image_link) as post_images,
+            json_agg(b.post_body_text) as post_bodys
           from
             posts p
             left join post_images as i on p.post_id = i.post_id
+            left join post_bodys as b on p.post_id = b.post_id
           group by
             p.post_id
         ) as p on p.conference_id = c.conference_id
