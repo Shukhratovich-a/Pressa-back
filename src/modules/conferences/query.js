@@ -5,14 +5,14 @@ const GET = `
     (
       select
         c.*,
+        l.conference_link,
         to_json(o) "organizer",
         to_json(p) "post"
       from
         conferences c
         inner join (
           select
-            o.*,
-            o.organizer_profession
+            o.*
           from
             organizers o
         ) as o on c.organizer_id = o.organizer_id
@@ -28,6 +28,13 @@ const GET = `
           group by
             p.post_id
         ) as p on p.conference_id = c.conference_id
+        left join (
+          select
+            l.conference_link,
+            l.conference_id
+          from
+            conference_links l
+        ) as l on c.conference_id = l.conference_id
       where
         case
           when $4 > 0 then c.conference_id = $4
