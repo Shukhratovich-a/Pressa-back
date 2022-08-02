@@ -147,8 +147,7 @@ const PUTSTATUS = `
   update conferences set
     status = $2
   where
-    conference_id = $1 and
-    status = 'waiting'
+    conference_id = $1
   returning *;
 `;
 
