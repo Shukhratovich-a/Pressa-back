@@ -20,7 +20,7 @@ const GET = `
           select
             p.*,
             json_agg(DISTINCT i.post_image_link) as post_images,
-            json_agg(b.post_body_text) as post_bodys
+            json_agg(DISTINCT b) as post_bodys
           from
             posts p
             left join post_images as i on p.post_id = i.post_id
