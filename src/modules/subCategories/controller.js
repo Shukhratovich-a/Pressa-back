@@ -6,7 +6,7 @@ const GET = async (req, res, next) => {
   try {
     const categories = await model.GET(req.params);
 
-    if (categories.length == 0) return next(new NotFoundError(204, "no content"));
+    if (categories.length == 0) return next(new NotFoundError(404, "client error"));
 
     res.status(200).json({
       status: 200,
@@ -22,7 +22,7 @@ const POST = async (req, res, next) => {
   try {
     const category = await model.POST(req.body);
 
-    if (!category) return next(new NotFoundError(204, "no content"));
+    if (!category) return next(new NotFoundError(404, "client error"));
 
     res.status(200).json({
       status: 200,
@@ -38,7 +38,7 @@ const PUT = async (req, res, next) => {
   try {
     const category = await model.PUT(req.body);
 
-    if (!category) return next(new NotFoundError(204, "no content"));
+    if (!category) return next(new NotFoundError(404, "client error"));
 
     res.status(200).json({
       status: 200,
@@ -54,7 +54,7 @@ const DELETE = async (req, res, next) => {
   try {
     const category = await model.DELETE(req.body);
 
-    if (!category) return next(new NotFoundError(204, "no content"));
+    if (!category) return next(new NotFoundError(404, "client error"));
 
     res.status(200).json({
       status: 200,

@@ -6,7 +6,7 @@ const GET = async (req, res, next) => {
   try {
     const organizers = await model.GET();
 
-    if (organizers.length == 0) return next(new NotFoundError(204, "no content"));
+    if (organizers.length == 0) return next(new NotFoundError(404, "client error"));
 
     res.status(200).json({
       status: 200,

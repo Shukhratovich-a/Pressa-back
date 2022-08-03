@@ -5,7 +5,7 @@ const GET = async (req, res, next) => {
   try {
     const conferences = await model.GET(req.query,req.params);
 
-    if (conferences.length == 0) return next(new NotFoundError(204, "no content"));
+    if (conferences.length == 0) return next(new NotFoundError(404, "client error"));
 
     res.status(200).json({
       status: 200,
@@ -20,7 +20,7 @@ const GET = async (req, res, next) => {
 const POST = async (req, res, next) => {
   try {
     const conference = await model.POST(req.body, req.files);
-    if (!conference) return next(new NotFoundError(204, "no content"));
+    if (!conference) return next(new NotFoundError(404, "client error"));
 
     res.status(200).json({
       status: 200,
@@ -35,7 +35,7 @@ const POST = async (req, res, next) => {
 const PUTSTATUS = async (req, res, next) => {
   try {
     const conference = await model.PUTSTATUS(req.params, req.body);
-    if (!conference) return next(new NotFoundError(204, "no content"));
+    if (!conference) return next(new NotFoundError(404, "client error"));
 
     res.status(202).json({
       status: 202,

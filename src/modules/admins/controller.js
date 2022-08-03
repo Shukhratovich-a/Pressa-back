@@ -6,7 +6,7 @@ import { InternalServerError, AuthorizationError, NotFoundError } from "../../li
 const GET = async (req, res, next) => {
   try {
     let admins = await model.GET(req.params);
-    if (admins.length === 0) return next(new NotFoundError(204, "no content"));
+    if (admins.length === 0) return next(new NotFoundError(404, "client Error"));
 
     res.status(200).json({
       status: 200,
