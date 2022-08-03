@@ -1,12 +1,14 @@
 const GET = `
   select
-    *
+    p.*,
+    c.status
   from
-    posts
+    posts as p
+  inner join conferences as c on p.conference_id = c.conference_id
   where 
     case
-      when $1 > 0 then post_id = $1
-      when $1 = 0 then post_title ilike concat('%', $2::varchar, '%')
+      when $1 > 0 then p.post_id = $1
+      when $1 = 0 then p.post_title ilike concat('%', $2::varchar, '%') and c.status = 'active'
       else true
     end;
 `;
